@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3">Database Management</h3>
+        </div>
+    </div>
+
+    <!-- ---------------------- MAIN CONTENT SECTION ---------------------- -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <!-- ---------------------- DELETE DATA SECTION ---------------------- -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0"><i class="fas fa-trash me-2"></i>Delete Data</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Delete all data from specific tables in the database.</p>
+                            
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-outline-danger w-100 mb-2" data-bs-toggle="modal" data-bs-target="#deletePortraitsModal">
+                                    Delete All Portraits
+                                </button>
+                                <small class="text-muted">This will delete all portraits and their relationships.</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-outline-danger w-100 mb-2" data-bs-toggle="modal" data-bs-target="#deleteRolesModal">
+                                    Delete All Roles
+                                </button>
+                                <small class="text-muted">This will delete all roles and their relationships.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ---------------------- WIKI IMPORT DATA SECTION ---------------------- -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fab fa-wikipedia-w me-2"></i>Import from Wikipedia</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Import portrait data from Wikipedia for specific dates.</p>
+                            
+                            <form method="POST" action="{{ url_for('import_wikipedia') }}" id="wikiImportForm">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                
+                                <!-- Date Selection -->
+                                <div class="form-group mb-3">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useRangeSwitch" name="use_date_range" {% if use_date_range %}checked{% endif %}>
+                                        <label class="form-check-label ms-2" for="useRangeSwitch">Use Date Range</label>
+                                    </div>
+                                    
+                                    <!-- ---------------------- SINGLE DATE SECTION ---------------------- -->
+                                    <div id="singleDateContainer" class="mb-3" {% if use_date_range %}style="display: none;"{% endif %}>
+                                        <label class="form-label fw-bold">Date (MM/DD):</label>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <select class="form-select" id="singleMonth" name="wiki_month">
+                                                    <option value="" selected disabled>Month</option>
+                                                    {% for i in range(1, 13) %}
+                                                    <option value="{{ '%02d' % i }}" {% if wiki_month == '%02d' % i %}selected{% endif %}>{{ ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][i-1] }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <select class="form-select" id="singleDay" name="wiki_day">
+                                                    <option value="" selected disabled>Day</option>
+                                                    <!-- Days populated by JavaScript -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="wikiDate" name="wiki_date">
+                                        
+                                        <!-- Error display for single date -->
+                                        {% if errors and not use_date_range and errors.start_date %}
+                                        <div class="wiki-error">{{ errors.start_date }}</div>
+                                        {% endif %}
+                                        
+                                        {% if errors and not use_date_range and errors.date_format %}
+                                        <div class="wiki-error">{{ errors.date_format }}</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- ---------------------- DATE RANGE SECTION ---------------------- -->
+                                    <div id="dateRangeContainer" class="mb-3" {% if not use_date_range %}style="display: none;"{% endif %}>
+                                        <div class="row">
+                                            <!-- Start Date -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Start Date (MM/DD):</label>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <select class="form-select" id="startMonth" name="start_month">
+                                                            <option value="" selected disabled>Month</option>
+                                                            {% for i in range(1, 13) %}
+                                                            <option value="{{ '%02d' % i }}" {% if start_month == '%02d' % i %}selected{% endif %}>{{ ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][i-1] }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <select class="form-select" id="startDay" name="start_day">
+                                                            <option value="" selected disabled>Day</option>
+                                                            <!-- Days populated by JavaScript -->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="startDate" name="start_date">
+                                            
+                                                <!-- Error display for start date -->
+                                                {% if errors and use_date_range and errors.start_date %}
+                                                <div class="wiki-error">{{ errors.start_date }}</div>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            <!-- End Date -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">End Date (MM/DD):</label>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <select class="form-select" id="endMonth" name="end_month">
+                                                            <option value="" selected disabled>Month</option>
+                                                            {% for i in range(1, 13) %}
+                                                            <option value="{{ '%02d' % i }}" {% if end_month == '%02d' % i %}selected{% endif %}>{{ ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][i-1] }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <select class="form-select" id="endDay" name="end_day">
+                                                            <option value="" selected disabled>Day</option>
+                                                            <!-- Days populated by JavaScript -->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="endDate" name="end_date">
+                                                
+                                                <!-- Error display for end date -->
+                                                {% if errors and use_date_range and errors.end_date %}
+                                                <div class="wiki-error">{{ errors.end_date }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Date Range Error Display -->
+                                        {% if errors and use_date_range and errors.date_range %}
+                                        <div class="wiki-error">{{ errors.date_range }}</div>
+                                        {% endif %}
+                                        
+                                        {% if errors and use_date_range and errors.date_format %}
+                                        <div class="wiki-error">{{ errors.date_format }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Import Options -->
+                                <div class="form-group mb-3">
+                                    <label class="form-label fw-bold">Import Options:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="importBirths" name="import_births" {% if import_births %}checked{% endif %}>
+                                        <label class="form-check-label" for="importBirths">
+                                            Import Births
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="importDeaths" name="import_deaths" {% if import_deaths %}checked{% endif %}>
+                                        <label class="form-check-label" for="importDeaths">
+                                            Import Deaths
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- Checkbox Error Display -->
+                                    {% if errors and errors.checkbox %}
+                                    <div class="wiki-error">{{ errors.checkbox }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Submit Button -->
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-download me-2"></i>Import Data
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------- MODALS SECTION ---------------------- -->
+<!-- Delete Portraits Modal -->
+<div class="modal fade" id="deletePortraitsModal" tabindex="-1" aria-labelledby="deletePortraitsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePortraitsModalLabel">Delete All Portraits</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                </div>
+                <p class="text-center">Are you sure you want to delete <strong>ALL portraits</strong> from the database?</p>
+                <p class="text-center text-muted small">This action cannot be undone and will remove all portrait images and relationships.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ url_for('delete_all_portraits') }}" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i>Delete All Portraits
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Roles Modal -->
+<div class="modal fade" id="deleteRolesModal" tabindex="-1" aria-labelledby="deleteRolesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteRolesModalLabel">Delete All Roles</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                </div>
+                <p class="text-center">Are you sure you want to delete <strong>ALL roles</strong> from the database?</p>
+                <p class="text-center text-muted small">This action cannot be undone and will remove all role relationships.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ url_for('delete_all_roles') }}" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i>Delete All Roles
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,563 @@
+/* #---------- VARIABLES ----------# */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --background-color: #f8f9fa;
+  --text-color: #333333;
+  --light-text: #f8f9fa;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --danger-color: #c0392b;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --sidebar-width: 250px;
+  --header-height: 0px; 
+  --border-radius: 4px;
+}
+
+/* #---------- GLOBAL STYLES ----------# */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Missing content styling */
+.missing-content {
+  color: var(--danger-color);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.top-navbar {
+  display: none; 
+}
+
+/* #---------- SIDEBAR STYLES ----------# */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--primary-color);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 900;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  color: var(--light-text);
+
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add collapsed sidebar styles */
+body.sidebar-collapsed .sidebar {
+  width: 60px;
+}
+
+body.sidebar-collapsed .sidebar .nav-link span,
+body.sidebar-collapsed .sidebar-user-info,
+body.sidebar-collapsed .sidebar-header span {
+  display: none;
+}
+
+body.sidebar-collapsed .main-content {
+  margin-left: 60px;
+}
+
+/* Add toggle button - moved to top */
+.sidebar-toggle {
+  position: fixed;
+  top: 20px;
+  left: var(--sidebar-width);
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+body.sidebar-collapsed .sidebar-toggle {
+  left: 60px;
+}
+
+/* Fix for menu text wrapping during transition */
+.sidebar .nav-link {
+  color: var(--light-text);
+  padding: 12px 20px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+}
+
+.sidebar .nav-link:hover, 
+.sidebar .nav-link.active {
+  background-color: rgba(52, 152, 219, 0.3);
+  border-left: 3px solid transparent; 
+  color: white;
+}
+
+.sidebar .nav-link i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Remove the sidebar-header or hide its content */
+.sidebar-header {
+  display: none; /* This removes the "Main Navigation" text completely */
+}
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Add a logo/brand area at the top of sidebar */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-brand i {
+  margin-right: 15px;
+  width: 20px;  /* Match the width of nav-link icons */
+  text-align: center;  /* Center the icon in its space */
+}
+
+/* Fix logout left border spacing and hide text when collapsed */
+.logout {
+  color: var(--danger-color);
+  border-left: 0 !important;
+  padding-left: 20px !important;
+}
+
+.logout:hover {
+  color: var(--accent-color);
+  border-left: 0 !important;
+}
+
+body.sidebar-collapsed .logout span {
+  display: none;
+}
+
+/* #---------- USER PROFILE STYLES ----------# */
+/* User info section in sidebar */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 10px;
+  transition: all 0.3s ease; /* Add transition for smooth scaling */
+}
+
+/* Add styles for collapsed sidebar avatar */
+body.sidebar-collapsed .sidebar-user {
+  justify-content: flex-start;
+  padding: 15px 10px;
+}
+
+body.sidebar-collapsed .sidebar-user-avatar {
+  width: 30px; /* Smaller width */
+  height: 30px; /* Smaller height by the same amount */
+  margin-right: 0; /* Remove margin when collapsed */
+  font-size: 0.8rem; /* Smaller font size for the avatar text */
+}
+
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-user-name {
+  font-weight: 600;
+  color: white;
+}
+
+/* Move user section to bottom */
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* #---------- MAIN CONTENT AREA ----------# */
+.main-content {
+  margin-left: var(--sidebar-width);
+  margin-top: 0; /* Changed from var(--header-height) to 0 */
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+/* #---------- CARD STYLES ----------# */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+/* Card styles */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+/* Add a specific class for cards that should have hover effects */
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Search by Date Page Styles */
+.card-header[data-bs-toggle="collapse"] {
+  cursor: pointer;
+}
+
+.card-header[data-bs-toggle="collapse"]:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* #---------- BUTTON STYLES ----------# */
+.btn-primary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-primary:hover, 
+.btn-primary:focus {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+/* Edit button styling to match primary button color */
+.btn-outline-edit {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-outline-edit:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  border-color: var(--secondary-color);
+}
+
+/* Pagination hover effects */
+.pagination-btn {
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Active pagination button with enhanced styling */
+.pagination-active {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+/* Add Secondary Role button styling */
+.add-role-btn {
+  color: var(--secondary-color) !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.add-role-btn:hover {
+  color: var(--primary-color) !important;
+  text-decoration: none !important;
+}
+
+/* #---------- TABLE STYLES ----------# */
+.table {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+/* Existing table styles with updated colors */
+.table thead th {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.table thead th a {
+  color: var(--light-text);
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* #---------- FORM STYLES ----------# */
+.form-container {
+  background-color: white;
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.form-control:focus, 
+.form-select:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.form-switch .form-check-input {
+  width: 3em;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Improved form error styling */
+.errors {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+  display: block;
+  padding: 0.375rem 0;
+  border-left: none; /* Removed the left border */
+  margin-bottom: 0.5rem;
+}
+
+/* Wiki import form specific error styling */
+.wiki-error {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  display: block;
+  padding: 0.375rem 0.75rem;
+  border-left: 3px solid var(--danger-color);
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.wiki-error::before {
+  content: "\f071"; /* Font Awesome exclamation triangle */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.375rem;
+}
+
+.custom-switch {
+  width: 3.5em !important;
+  height: 1.75em !important;
+  margin-top: 0 !important;
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+.custom-switch:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.custom-switch:focus {
+  box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
+  border-color: var(--primary-color);
+}
+
+/* #---------- ALERT STYLES ----------# */
+.alert {
+  border-radius: var(--border-radius);
+  border: none;
+}
+
+.alert-success {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: var(--success-color);
+}
+
+.alert-danger {
+  background-color: rgba(192, 57, 43, 0.1);
+  color: var(--danger-color);
+}
+
+/* #---------- UTILITY CLASSES ----------# */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-secondary {
+  color: var(--secondary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+.hide-br {
+  display: none;
+}
+
+/* #---------- ANIMATION STYLES ----------# */
+/* Animation for page transitions */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.arrow-icon {
+  display: inline-block;
+  font-size: 0.8em;
+  transition: transform 0.3s;
+}
+
+.active .arrow-icon {
+  transform: scaleY(2);
+}
+
+/* #---------- PLACEHOLDER STYLES ----------# */
+/* Simple bold text style for missing content */
+.missing-content {
+  font-weight: bold;
+  color: var(--danger-color);
+  font-style: italic;
+}
+
+/* Consistent styling for missing content placeholders */
+.no-image-placeholder, .no-role-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  color: #6c757d;
+}
+
+.no-image-placeholder i, .no-role-placeholder i {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.no-image-text, .no-role-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* #---------- RESPONSIVE STYLES ----------# */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+  }
+}

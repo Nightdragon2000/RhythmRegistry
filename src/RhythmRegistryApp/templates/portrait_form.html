@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">{{ page_title }}</h4>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body">
+                    <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
+                        {% if portrait %}
+                        <input type="hidden" name="portrait_id" value="{{ portrait.id }}">
+                        {% endif %}
+                        {{ form.csrf_token }}
+
+                        <div class="row">
+                            <!-- First Name Field -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.first_name.label(class="form-label fw-bold") }}
+                                    {{ form.first_name(class="form-control") }}
+                                    {% for error in form.first_name.errors %}
+                                    <div class="errors">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <!-- Last Name Field -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.last_name.label(class="form-label fw-bold") }}
+                                    {{ form.last_name(class="form-control") }}
+                                    {% for error in form.last_name.errors %}
+                                    <div class="errors">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Role Field -->
+                        <div class="form-group mb-3">
+                            {{ form.main_role.label(class="form-label fw-bold") }}
+                            {{ form.main_role(class="form-select form-control mb-2") }}
+                            {% for error in form.main_role.errors %}
+                            <div class="errors" style="margin-top: -15px;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        {% if is_edit and form.secondary_roles|length > 0 %}
+                        <!-- Existing Secondary Roles in Edit Mode -->
+                        <div id="existing-roles" class="mb-3">
+                            <label for="existing-roles" class="form-label fw-bold">Existing Secondary Roles</label>
+                            {% for role in form.secondary_roles %}
+                            <div class="form-group mt-3" id="existing-role-{{ loop.index0 }}">
+                                <div class="d-flex align-items-center">
+                                    {{ role.secondary_role(class="form-select form-control") }}
+                                    <img src="{{ url_for('static', filename='icons/delete_icon.png') }}" width="25" alt="Delete"
+                                        class="ms-3 delete-role" style="cursor: pointer;">
+                                </div>
+                                {% for error in role.secondary_role.errors %}
+                                <div class="errors">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% elif not is_edit %}
+                        <!-- Secondary Roles in Add Mode -->
+                        <div id="secondary-roles" class="mb-3">
+                            <label for="secondary-roles" class="form-label fw-bold">Secondary Roles</label>
+                            {% for role in form.secondary_roles %}
+                            <div class="form-group mt-3" id="secondary-role-{{ loop.index0 }}">
+                                <div class="d-flex align-items-center">
+                                    {{ role.secondary_role(class="form-select form-control") }}
+                                    <img src="{{ url_for('static', filename='icons/delete_icon.png') }}" width="25" alt="Delete"
+                                        class="ms-3 delete-role" style="cursor: pointer;">
+                                </div>
+                                {% for error in role.secondary_role.errors %}
+                                <div class="errors">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Add Secondary Roles Section  -->
+                        {% if is_edit %}
+                        <div id="secondary-roles" class="mb-3">
+                            <label for="secondary-roles" class="form-label fw-bold">Add Secondary Roles</label>
+                        </div>
+                        {% endif %}
+
+                        <!-- Add Secondary Role Button -->
+                        <button type="button" class="btn btn-link text-decoration-none text-primary mb-3 p-0 add-role-btn" id="add-secondary-role">
+                            <i class="fas fa-plus-circle me-1"></i>Add Secondary Role
+                        </button>
+
+                        <hr class="my-4">
+
+                        <!-- Main Photo Upload -->
+                        <div class="form-group mb-3">
+                            {{ form.main_photo.label(class="form-label fw-bold") }}
+                            {% if is_edit %}
+                            <input class="form-control" type="file" id="main-photo" name="main-photo" accept="image/*">
+                            {% else %}
+                            {{ form.main_photo(class="form-control") }}
+                            {% endif %}
+                            {% for error in form.main_photo.errors %}
+                            <div class="errors">{{ error }}</div>
+                            {% endfor %}
+                            
+                            <!-- Current Photo Preview in Edit Mode -->
+                            {% if is_edit and portrait.main_photo %}
+                            <div class="mt-2 mb-3">
+                                <img src="{{ portrait.main_photo }}" width="100" class="img-thumbnail">
+                            </div>
+
+                            <!-- Delete Image Option in Edit Mode-->
+                            <div class="form-check mb-3">
+                                {{ form.delete_image(class="form-check-input") }}
+                                {{ form.delete_image.label(class="form-check-label") }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <!-- Date of Birth Field -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.date_of_birth.label(class="form-label fw-bold") }}
+                                    {{ form.date_of_birth(class="form-control") }}
+                                    {% for error in form.date_of_birth.errors %}
+                                    <div class="errors">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <!-- Date of Death Field -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.date_of_death.label(class="form-label fw-bold") }}
+                                    {{ form.date_of_death(class="form-control") }}
+                                    {% for error in form.date_of_death.errors %}
+                                    <div class="errors">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Short Biography Field -->
+                        <div class="form-group mb-3">
+                            {{ form.short_bio.label(class="form-label fw-bold") }}
+                            {{ form.short_bio(class="form-control") }}
+                            {% for error in form.short_bio.errors %}
+                            <div class="errors">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Long Biography Field -->
+                        <div class="form-group mb-4">
+                            {{ form.long_bio.label(class="form-label fw-bold") }}
+                            {{ form.long_bio(class="form-control", style="min-height: 150px;") }}
+                            {% for error in form.long_bio.errors %}
+                            <div class="errors">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <a class="btn btn-outline-secondary me-2" href="{{ url_for('manage_portraits') }}">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>{{ submit_text }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------- JAVASCRIPT DATA SECTION ---------------------- -->
+<div id="role-choices"
+    data-choices='[{% for choice in form.main_role.choices %}{"value": "{{ choice[0] }}", "label": "{{ choice[1] }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+</div>
+{% endblock content %}
