@@ -42,7 +42,7 @@ pip install -r requirements.txt
 python setup_database.py
 ```
 
-Running the Application
+### Running the Application
 Start the application with:
 ```bash
 python src/run.py
