@@ -32,8 +32,12 @@ cd RhythmRegistry
 python -m venv venv
 venv\Scripts\activate
 ```
-
 3. Install dependencies::
+```bash
+pip install -r requirements.txt
+```
+
+4. Run database setup:
 ```bash
 python setup_database.py
 ```
