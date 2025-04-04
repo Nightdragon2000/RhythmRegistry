@@ -25,22 +25,26 @@ Rhythm Registry is a Flask-based web application that allows users to:
 ```bash
 git clone https://github.com/yourusername/RhythmRegistry.git
 cd RhythmRegistry
+```
 
 2. Create and activate a virtual environment:
 ```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
 3. Install dependencies::
 ```bash
 python setup_database.py
+```
 
 Running the Application
 Start the application with:
 ```bash
 python src/run.py
+```
 
-The application will be available at http://localhost:5002
+The application will be available at (http://localhost:5002)
 
 ## Features
 ### Portrait Management
