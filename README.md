@@ -1,6 +1,6 @@
 # Rhythm Registry
 
-A web application for managing and exploring portraits, roles, and relationships between individuals.
+<img src="images/dashboard.png" alt="Dashboard" >
 
 ## Overview
 
