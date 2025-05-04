@@ -174,34 +174,36 @@ print("\nUpdating application configuration...")
 
 # Find the config file
 app_dir = Path("src/RhythmRegistryApp")
-config_file = app_dir / "config.py"
+config_file = app_dir / ".env.example"
 
 # Create a random secret key
 secret_key = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(24))
 
-# Create config content
-config_content = f"""# Database Configuration
-DB_HOST = '{host}'
-DB_PORT = '{port}'
-DB_NAME = '{db_name}'
-DB_USER = '{username}'
-DB_PASSWORD = '{password}'
+# Create environment variables example file
+env_content = f"""# Database Configuration
+DB_HOST={host}
+DB_PORT={port}
+DB_NAME={db_name}
+DB_USER={username}
+DB_PASSWORD={password}
 
 # Secret key for session
-SECRET_KEY = '{secret_key}'
+SECRET_KEY={secret_key}
 """
 
 try:
     # Make sure the directory exists
     app_dir.mkdir(parents=True, exist_ok=True)
     
-    # Write the config file
+    # Write the .env.example file
     with open(config_file, "w") as f:
-        f.write(config_content)
+        f.write(env_content)
     
-    print(f"Config file created successfully at {config_file}")
+    print(f"Environment variables example file created successfully at {config_file}")
+    print("NOTE: The application now uses environment variables for database connection.")
+    print("      You can set these variables in your environment or use the .env.example as a template.")
 except Exception as e:
-    print(f"Error updating configuration: {str(e)}")
+    print(f"Error creating environment variables example file: {str(e)}")
     sys.exit(1)
 
 # Success message

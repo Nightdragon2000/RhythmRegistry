@@ -1,5 +1,11 @@
 from RhythmRegistryApp import app
+import os
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)  # Changed port from 5000 to 5001
+    # Get port from environment variable (Render sets PORT env var)
+    port = int(os.environ.get("PORT", 5002))
+    # In production, debug should be False
+    debug = os.environ.get("FLASK_ENV") == "development"
+    # Bind to 0.0.0.0 to make the app accessible externally
+    app.run(host="0.0.0.0", debug=debug, port=port)
