@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from datetime import timedelta
-from RhythmRegistryApp.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, SECRET_KEY
+from .config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, SECRET_KEY
 
 
 app = Flask(__name__)
@@ -25,4 +25,4 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login"
 
 
-from RhythmRegistryApp import routes
+from . import routes
