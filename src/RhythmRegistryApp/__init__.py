@@ -4,17 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from datetime import timedelta
-from RhythmRegistryApp.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, SECRET_KEY
+# Change the import to use relative imports
+from .config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, SECRET_KEY
 
 
 app = Flask(__name__)
 
 # Configuration section
 app.config["SECRET_KEY"] = SECRET_KEY
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=2)
 
 # Initialize extensions
@@ -26,4 +26,4 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login"
 
 
-from RhythmRegistryApp import routes
+from . import routes
