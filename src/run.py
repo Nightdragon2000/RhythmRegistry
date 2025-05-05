@@ -1,4 +1,4 @@
-from src.RhythmRegistryApp import app
+from RhythmRegistryApp import app
 import os
 
 
