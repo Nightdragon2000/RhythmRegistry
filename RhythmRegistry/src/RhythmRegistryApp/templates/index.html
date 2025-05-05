@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- ---------------------- WELCOME SECTION ---------------------- -->
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h2 class="display-5 fw-bold text-primary mb-3">Welcome to RhythmRegistry</h2>
+            <div class="col-lg-8 mx-auto">
+                <p class="lead mb-4 text-muted">
+                    This platform helps you manage portraits, roles, and their relationships. 
+                    Use the navigation menu to access different sections of the application.
+                </p>
+                <div class="d-flex justify-content-center">
+                    <div class="border-bottom border-primary" style="width: 50px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------- CARDS SECTION ---------------------- -->
+    <div class="row">
+
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-circle fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Manage Portraits</h5>
+                    <p class="card-text text-muted">Add, edit, and delete portrait records in the system.</p>
+                    <a href="{{ url_for('manage_portraits') }}" class="btn btn-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Go to Portraits
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+         <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-theater-masks fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Manage Roles</h5>
+                    <p class="card-text text-muted">Create and manage different roles for your portraits.</p>
+                    <a href="{{ url_for('manage_roles') }}" class="btn btn-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Go to Roles
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Portrait Relationships</h5>
+                    <p class="card-text text-muted">Manage the relationships between portraits and roles.</p>
+                    <a href="{{ url_for('manage_portraits_in_roles') }}" class="btn btn-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Go to Relationships
+                    </a>
+                </div>
+            </div>
+        </div>    
+
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-database fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Database Management</h5>
+                    <p class="card-text text-muted">Import data and manage database operations.</p>
+                    <a href="{{ url_for('manage_database') }}" class="btn btn-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Manage Data
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 card-hover">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Search By Date</h5>
+                    <p class="card-text text-muted">Find portraits by specific dates or date ranges.</p>
+                    <a href="{{ url_for('search_by_date') }}" class="btn btn-primary mt-2">
+                        <i class="fas fa-arrow-right me-1"></i> Go to Search
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+
+
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3">Portrait Relationships</h3>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex" style="width: 40%;">
+                    <!-- Placeholder for future search functionality -->
+                    <div class="input-group" style="visibility: hidden;">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------- PORTRAITS IN ROLES TABLE SECTION ---------------------- -->
+    {% if portraits_in_roles_dictionary %}
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mt-2">
+                    <!-- Table Header -->
+                    <thead class="table-primary">
+                        <tr>
+                            <th class="column-id">
+                                <a href="{{ url_for('manage_portraits_in_roles', page=1, sort_by='id', order='asc') }}"
+                                    class="{% if sort_by == 'id' and order == 'asc' %}active{% endif %}">
+                                    <span class="arrow-icon">&#9650;</span>
+                                </a>
+                                Id
+                                <a href="{{ url_for('manage_portraits_in_roles', page=1, sort_by='id', order='desc') }}"
+                                    class="{% if sort_by == 'id' and order == 'desc' %}active{% endif %}">
+                                    <span class="arrow-icon">&#9660;</span>
+                                </a>
+                            </th>
+                            <th class="column-name">
+                                <a href="{{ url_for('manage_portraits_in_roles', page=1, sort_by='name', order='asc') }}"
+                                    class="{% if sort_by == 'name' and order == 'asc' %}active{% endif %}">
+                                    <span class="arrow-icon">&#9650;</span>
+                                </a>
+                                Name
+                                <a href="{{ url_for('manage_portraits_in_roles', page=1, sort_by='name', order='desc') }}"
+                                    class="{% if sort_by == 'name' and order == 'desc' %}active{% endif %}">
+                                    <span class="arrow-icon">&#9660;</span>
+                                </a>
+                            </th>
+                            <th class="column-roles">Roles</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    
+                    <!-- Table Body -->
+                    <tbody>
+                        {% for key, data in portraits_in_roles_dictionary.items() %}
+                        <tr>
+                            <td class="column-id">{{ key }}</td>
+                            <td class="column-name">{{ data['name'] }}</td>
+                            <td class="column-roles">{{ data['main_role'] }}, {{ data['roles'] | join(', ') }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('edit_portrait_in_role', pir_id=key) }}" class="btn btn-sm btn-outline-edit me-1" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger delete-button" 
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal{{ key }}" 
+                                        data-pir-id="{{ key }}" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------- PAGINATION SECTION ---------------------- -->
+    <div class="d-flex justify-content-center mt-2 mb-4">
+        {% for page_number in portraits.iter_pages(left_edge=2, right_edge=2, left_current=1, right_current=1) %}
+        {% if page_number %}
+        {% if portraits.page == page_number %}
+        <a href="{{ url_for('manage_portraits_in_roles', page=page_number, sort_by=sort_by, order=order) }}"
+            class="btn btn-primary pagination-btn pagination-active me-2">{{ page_number }}</a>
+        {% else %}
+        <a href="{{ url_for('manage_portraits_in_roles', page=page_number, sort_by=sort_by, order=order) }}"
+            class="btn btn-outline-primary pagination-btn me-2">{{ page_number }}</a>
+        {% endif %}
+        {% else %}
+        <span class="me-2"> ... </span>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- ---------------------- EMPTY STATE SECTION ---------------------- -->
+    {% else %}
+    <div class="row">
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-exclamation-circle fa-3x mb-3 text-warning"></i>
+            <h3>Your database is empty</h3>
+            <p class="mb-4">No portrait role relationships found. Please add some relationships to get started.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ---------------------- MODALS SECTION ---------------------- -->
+<!-- Delete Modals -->
+{% for key, data in portraits_in_roles_dictionary.items() %}
+<div class="modal fade" id="deleteModal{{ key }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ key }}"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{ key }}">Delete Portrait Relationship</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Form -->
+            <form action="{{ url_for('delete_portrait_in_role', pir_id=key) }}" method="POST">
+                {{ form.csrf_token }}
+                
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <input type="hidden" name="portrait_id" value="{{ key }}">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                    </div>
+                    <p class="text-center">Are you sure you want to delete all the relationships of the portrait <strong>{{data['name']}}</strong>?</p>
+                    <p class="text-center text-muted small">This action cannot be undone.</p>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}
