@@ -1,16 +1,23 @@
 # Rhythm Registry
 
-<img src="images/dashboard.png" alt="Dashboard" >
-
 ## Overview
 
-Rhythm Registry is a Flask-based web application that allows users to:
-- Manage portraits of individuals
-- Assign roles to individuals
-- Define relationships between individuals
-- Import data from Wikipedia
-- Generate PDF reports
-- Search and filter the database
+RhythmRegistry is a Flask-based web application designed to manage and catalog portraits, roles, and their relationships. It provides a comprehensive system for organizing historical figures, their professions, and biographical information with a user-friendly interface.
+
+## Screenshots
+
+![Dashboard](images/dashboard.png)
+*RhythmRegistry main dashboard interface*
+
+## Features
+- **Portrait Management**:  Add, edit, and delete portrait records with biographical information
+- **Role Management**:  Create and manage professional roles for historical figures
+- **Relationship System**:  Associate portraits with multiple roles
+- **Wikipedia Integration**:  Import portrait data directly from Wikipedia for specific dates
+- **Search Functionality**:  Find portraits through comprehensive search options
+- **User Authentication**:  Secure login and registration system
+- **Responsive Design**:  Mobile-friendly interface that adapts to all devices
+- **Database Tools**:  Utilities for managing the PostgreSQL database
 
 ## Installation
 
@@ -50,27 +57,6 @@ python src/run.py
 
 The application will be available at (http://localhost:5002)
 
-## Features
-### Portrait Management
-- Add, edit, and delete portraits
-- Assign primary and secondary roles to individuals
-- Upload and manage portrait images
-### Role Management
-- Create and manage roles for individuals
-- Associate portraits with multiple roles
-### Relationship Management
-- Define relationships between individuals
-- Visualize connections between portraits
-### Data Import
-- Import data from Wikipedia
-- Process dates and extract person information
-- Add portraits and roles to the database automatically
-### PDF Generation
-- Generate PDF reports of search results
-- Preview and download PDF documents
-### Search Functionality
-- Search by name, role, date range
-- Filter results based on various criteria
 
 ## Technologies Used
 - Flask - Web framework
