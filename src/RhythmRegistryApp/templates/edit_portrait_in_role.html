@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm mb-4">
+                <!-- Card Header -->
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Edit Portrait Relationships</h4>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body">
+                    <form action="{{ url_for('edit_portrait_in_role', pir_id=portraits_in_roles[0].portrait_id) }}"
+                        method="POST" enctype="multipart/form-data">
+                        {{ form.csrf_token }}
+                        
+                        <!-- Main Role Section -->
+                        <div class="form-group mb-3">
+                            {{ form.main_role.label(class="form-label fw-bold") }}
+                            {{ form.main_role(class="form-select form-control mb-2") }}
+                            {% for error in form.main_role.errors %}
+                            <div class="errors" style="margin-top: -15px;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Existing Secondary Roles Section -->
+                        {% if form.secondary_roles|length > 0 %}
+                        <div id="existing-roles" class="mb-3">
+                            <label for="existing-roles" class="form-label fw-bold">Existing Secondary Roles</label>
+                            {% for role in form.secondary_roles %}
+                            <div class="form-group mt-3" id="existing-role-{{ loop.index0 }}">
+                                <div class="d-flex align-items-center">
+                                    {{ role.secondary_role(class="form-select form-control") }}
+                                    <img src="{{ url_for('static', filename='icons/delete_icon.png') }}" width="25" alt="Delete"
+                                        class="ms-3 delete-role" style="cursor: pointer;">
+                                </div>
+                                {% for error in role.secondary_role.errors %}
+                                <div class="errors">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Add New Secondary Roles Section -->
+                        <div id="secondary-roles" class="mb-3">
+                            <label for="secondary-roles" class="form-label fw-bold">Add Secondary Roles</label>
+                            <!-- Dynamic roles will be added here by JavaScript -->
+                        </div>
+                        
+                        <button type="button" class="btn btn-link text-decoration-none text-primary mb-3 p-0 add-role-btn" id="add-secondary-role">
+                            <i class="fas fa-plus-circle me-1"></i>Add Secondary Role
+                        </button>
+ 
+                        <hr class="my-4">
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{{ url_for('manage_portraits_in_roles') }}" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------- MODALS SECTION ---------------------- -->
+{% for pir in portraits_in_roles %}
+<div class="modal fade" id="deleteModal{{ pir.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ pir.id }}"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{ pir.id }}">Delete Relationship</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Form -->
+            <form action="{{ url_for('delete_relatshionship', pir_id=pir.id) }}" method="POST">
+                {{ form.csrf_token }}
+                
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <input type="hidden" name="pir_id" value="{{ pir.id }}">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                    </div>
+                    <p class="text-center">Are you sure you want to delete this role relationship?</p>
+                    <p class="text-center text-muted small">This action cannot be undone.</p>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- ---------------------- JAVASCRIPT DATA SECTION ---------------------- -->
+<div id="role-choices"
+    data-choices='[{% for choice in form.main_role.choices %}{"value": "{{ choice[0] }}", "label": "{{ choice[1] }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+</div>
+{% endblock content %}
