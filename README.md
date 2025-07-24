@@ -2,33 +2,41 @@
 
 ## Overview
 
-RhythmRegistry is a Flask-based web application designed to manage and catalog portraits, roles, and their relationships. It provides a comprehensive system for organizing historical figures, their professions, and biographical information with a user-friendly interface.
+**Rhythm Registry** is a Flask-based web application designed for cataloging historical portraits, roles, and their interrelationships. Built with a modular structure and responsive interface, it offers a powerful toolset for organizing biographical records and professional affiliations with precision and ease.
 
-## Screenshots
+Users can manage detailed portrait entries, associate them with multiple roles, and import enriched data from external sources like Wikipedia.
 
-![Dashboard](images/dashboard.png)
-*RhythmRegistry main dashboard interface*
+**[Click here to watch the demo video](https://example.com)**
+
+<div align="center">
+  <img src="images/dashboard.png" alt="Rhythm Registry Dashboard" height="250" />
+</div>
+<p align="center">
+  <em>Main dashboard interface</em>
+</p>
 
 ## Features
-- **Portrait Management**:  Add, edit, and delete portrait records with biographical information
-- **Role Management**:  Create and manage professional roles for historical figures
-- **Relationship System**:  Associate portraits with multiple roles
-- **Wikipedia Integration**:  Import portrait data directly from Wikipedia for specific dates
-- **Search Functionality**:  Find portraits through comprehensive search options
-- **User Authentication**:  Secure login and registration system
-- **Responsive Design**:  Mobile-friendly interface that adapts to all devices
-- **Database Tools**:  Utilities for managing the PostgreSQL database
+- **Portrait Management**: Add, edit, and remove portraits with detailed biographical data  
+- **Role System**: Create and manage roles linked to historical figures  
+- **Many-to-Many Relationships**: Associate a single portrait with multiple roles  
+- **Wikipedia Integration**: Import portrait information from Wikipedia based on specific dates  
+- **Search Tools**: Search across names, dates, and associated roles  
+- **Authentication**: Secure login and registration system  
+- **Responsive UI**: Adapts smoothly to mobile, tablet, and desktop displays  
+- **PostgreSQL Tools**: Utilities for database creation and maintenance
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.x
-- PostgreSQL database
+To install and run Rhythm Registry, ensure the following are available:
+
+- **Python** 3.x  
+- **PostgreSQL** database  
 
 ### Setup
 
-1. Clone the repository:
+1. Clone the repository and navigate into the project directory:
 ```bash
 git clone https://github.com/Nightdragon2000/RhythmRegistry.git
 cd RhythmRegistry
@@ -39,29 +47,31 @@ cd RhythmRegistry
 python -m venv venv
 venv\Scripts\activate
 ```
-3. Install dependencies::
+3. Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run database setup:
+4. Initialize the database:
 ```bash
 python setup_database.py
 ```
 
 ### Running the Application
-Start the application with:
+To start the application, run:
 ```bash
 python src/run.py
 ```
 
-The application will be available at (http://localhost:5002)
+Once running, the system will be accessible at:  
+[`http://localhost:5002`](http://localhost:5002)
 
 
-## Technologies Used
-- Flask - Web framework
-- SQLAlchemy - ORM for database operations
-- Jinja2 - Template engine
-- Bootstrap - Frontend framework
-- ReportLab - PDF generation
-- Beautiful Soup - Web scraping for Wikipedia data import
+## System Architecture
+- **Framework**: Flask  
+- **Database Layer**: SQLAlchemy (PostgreSQL)  
+- **Templating**: Jinja2  
+- **Frontend**: Bootstrap  
+- **Additional Tools**:
+  - ReportLab *(for PDF generation)*  
+  - Beautiful Soup *(for Wikipedia data scraping)*
