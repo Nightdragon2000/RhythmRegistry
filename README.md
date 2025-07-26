@@ -2,9 +2,9 @@
 
 ## Overview
 
-**Rhythm Registry** is a Flask-based web application designed for cataloging historical portraits, roles, and their interrelationships. Built with a modular structure and responsive interface, it offers a powerful toolset for organizing biographical records and professional affiliations with precision and ease.
+**Rhythm Registry** is a Flask-based web application designed for cataloging artists, performers, and their professional roles. Built with a modular structure and responsive interface, it offers a powerful toolset for organizing biographical records and affiliations with precision and ease.
 
-Users can manage detailed portrait entries, associate them with multiple roles, and import enriched data from external sources like Wikipedia.
+Users can manage detailed portrait entries, associate them with multiple creative roles (e.g. actor, singer), and import enriched data from external sources like Wikipedia.
 
 **[Click here to watch the demo video](https://youtu.be/TdXgn9y5ZD0)**
 
@@ -17,7 +17,7 @@ Users can manage detailed portrait entries, associate them with multiple roles, 
 
 ## Features
 - **Portrait Management**: Add, edit, and remove portraits with detailed biographical data  
-- **Role System**: Create and manage roles linked to historical figures  
+- **Role System**: Create and manage roles linked to artists and public figures  
 - **Many-to-Many Relationships**: Associate a single portrait with multiple roles  
 - **Wikipedia Integration**: Import portrait information from Wikipedia based on specific dates  
 - **Search Tools**: Search across names, dates, and associated roles  
