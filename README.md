@@ -6,7 +6,7 @@
 
 Users can manage detailed portrait entries, associate them with multiple roles, and import enriched data from external sources like Wikipedia.
 
-**[Click here to watch the demo video](https://example.com)**
+**[Click here to watch the demo video](https://youtu.be/TdXgn9y5ZD0)**
 
 <div align="center">
   <img src="images/dashboard.png" alt="Rhythm Registry Dashboard" height="250" />
