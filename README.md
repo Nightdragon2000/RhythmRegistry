@@ -6,7 +6,7 @@
 
 Users can manage detailed portrait entries, associate them with multiple creative roles (e.g. actor, singer), and import enriched data from external sources like Wikipedia.
 
-<a href="https://youtu.be/TdXgn9y5ZD0" target="_blank"><strong>Click here to watch the demo video</strong></a>
+**[Click here to watch the demo video](https://youtu.be/TdXgn9y5ZD0)**
 
 <div align="center">
   <img src="images/dashboard.png" alt="Rhythm Registry Dashboard" height="250" />
