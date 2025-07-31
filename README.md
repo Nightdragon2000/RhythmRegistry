@@ -38,7 +38,7 @@ To install and run Rhythm Registry, ensure the following are available:
 
 1. Clone the repository and navigate into the project directory:
 ```bash
-git clone https://github.com/Nightdragon2000/RhythmRegistry.git
+git clone https://github.com/afroditikalantzi/RhythmRegistry.git
 cd RhythmRegistry
 ```
 
